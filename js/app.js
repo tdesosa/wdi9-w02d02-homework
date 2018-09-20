@@ -71,43 +71,55 @@ game = {
         name: "Ash",
         hand: [],
         pointsWon: 0,
+        roundsWon: 0,
     },
     computer: {
         name: "Gary",
         hand: [],
         pointsWon: 0,
+        roundsWon: 0,
     },
-    dealACard(cardPlayer){
+    dealACard(player) {
+        console.log(`Dealing a card to palyer ${player.name}`)
         let randomIndex = Math.floor(Math.random() * this.deck.length);
         let cardToDeal = game.deck.splice(randomIndex, 1)[0];
-        cardPlayer.hand.push(cardToDeal);
+        console.log(cardToDeal);
+        player.hand.push(cardToDeal);
     },
-    startGame(){
-        for(let i = 0; i < 3; i++){
+    startGame() {
+        console.log("The game is beginning")
+        for (let i = 0; i < 3; i++) {
             this.dealACard(game.player);
-            console.log(`${game.player.name} has this card ${this.cardToDeal}`);
             this.dealACard(game.computer);
-            console.log(`${game.computer.name} has this card`);
         }
         this.battle();
     },
-    battle(){
+    battle() {
         let playerCard = this.player.hand.pop();
         let computerCard = this.computer.hand.pop();
-        if(playerCard.damage > computerCard.damage){
-            this.player.points ++
-            console.log("PLAYER WON THIS BATTLE");
-        } else if(playerCard.damage === computerCard.damage) {
+        console.log(`${this.player.name} played ${playerCard.name} which deals ${playerCard.damage} damage.`);
+        console.log(`${this.computer.name} played ${computerCard.name} which deals ${computerCard.damage} damage.`);
+        if (playerCard.damage > computerCard.damage) {
+            this.player.pointsWon ++
+            console.log(`${this.player.name} WON THIS BATTLE`);
+        } else if (playerCard.damage === computerCard.damage) {
             console.log("TIE GAME")
         } else {
-            this.computer.points++
-            console.log("COMPUTER WON THIS BATTLE")
+            this.computer.pointsWon ++
+            console.log(`${this.computer.name} WON THIS BATTLE`)
         }
-
+        this.roundsWon();
     },
-
-    //deal a card function
-    //function to start the game which will deal a hand to player and computer
+    roundsWon() {
+        console.log(`SCORE: ${this.player.name}: ${this.player.pointsWon}, ${this.computer.name}: ${this.computer.pointsWon}`);
+    }
 }
+
+let pointsToWin = 3;
+for (i = 0; i < 3; i++){
 game.startGame();
+  if (game.player.pointsWon <= pointsToWin || game.computer.pointsWon <= pointsToWin) {
+    console.log("We have a winner!")
+  }
+}
 
